@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "product": "ITV Check",
+  "rules_pack": {
+    "id": "es-itv-manual",
+    "version": "7.9",
+    "effective_from": "2026-01-01",
+    "jurisdiction": "ES",
+    "language": "es",
+    "status": "reference_pending_content_audit",
+    "official_sources": [
+      {
+        "title": "Ministerio de Industria y Turismo — Inspección Técnica de Vehículos (ITV)",
+        "url": "https://industria.gob.es/Calidad-Industrial/vehiculos/Paginas/inspeccion-tecnica-vehiculos.aspx",
+        "source_type": "official_index",
+        "checked_on": "2026-10-15"
+      },
+      {
+        "title": "Manual de procedimiento de inspección de las estaciones ITV — versión 7.9",
+        "url": "https://industria.gob.es/Calidad-Industrial/vehiculos/itv1/Manual%20de%20procedimiento%20de%20inspecci%C3%B3n/Manual%20de%20procedimiento%20de%20inspeccion%20de%20estaciones%20ITV-V%207.9_final2.pdf",
+        "source_type": "official_manual",
+        "effective_from": "2026-01-01"
+      }
+    ],
+    "related_notices": [
+      {
+        "title": "Ministerio — dudas y cuestiones sobre modificación del anexo IX del Reglamento General de Vehículos",
+        "url": "https://industria.gob.es/Calidad-Industrial/vehiculos/Paginas/inspeccion-tecnica-vehiculos.aspx",
+        "published_reference": "March 2026",
+        "note": "Review whether any notice changes checklist content before release."
+      }
+    ],
+    "last_checked": "2026-10-15",
+    "next_review_due": "2026-10-22"
+  },
+  "update_policy": {
+    "review_frequency_days": 7,
+    "manual_review_required": true,
+    "auto_apply_updates": false,
+    "require_changelog": true,
+    "require_regression_tests": true,
+    "rollback_supported_by_design": true
+  },
+  "product_notice": "This manifest records the reference source and review status. It does not certify that every checklist item has been legally validated or that a vehicle will pass an official ITV inspection."
+}
