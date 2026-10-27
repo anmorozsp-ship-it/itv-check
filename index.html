@@ -193,8 +193,28 @@ function render(){
  if(tab==="rd"){h=`<section><h2>${tt.rd}</h2><div class="card"><div class="big">${c.pct}%</div><div class="bar" style="margin:10px 0"><div style="width:${c.pct}%"></div></div><p>${tt.crit}: <b>${c.cl.length}</b> ${tt.left} (${c.cr.length-c.cl.length}/${c.cr.length})</p><p>${tt.bad}: <b>${c.probs.length}</b></p>${D.pro?`<span class="st" style="background:${col(c.s)}">${tt.st[c.s]}</span>`:`<span class="mut">🔒 ${tt.tipT}</span>`}</div>${D.pro?`<button class="b" onclick="snap()">${tt.save}</button>`:""}</section>`}
  if(tab==="rp"){h=`<section><h2>${tt.rp}</h2><div class="card"><p class="mut">${esc(tt.note)}</p><button class="b" onclick="window.print()">${tt.pdf}</button></div><div class="card"><p class="mut">${tt.bkn}</p><div class="row"><button class="g" onclick="bk()">${tt.exp}</button><button class="g" onclick="document.getElementById('fi').click()">${tt.imp}</button></div></div></section>`}
  if(tab==="hs"&&D.pro){h=`<section><h2>${tt.hs}</h2>`+(D.hist.length?D.hist.map((e,i)=>`<div class="card row" style="align-items:center"><div><b>${esc(e.date)}</b> · ${esc(e.plate||"—")}<br><span class="mut">${e.pct}% · ${tt.crit}: ${e.cl}</span></div><div style="flex:0 0 auto"><span class="st" style="background:${col(e.s)}">${tt.st[e.s]}</span> <button class="g" onclick="D.hist.splice(${i},1);sv();render()">✕</button></div></div>`).join(""):`<p class="mut">${tt.none}</p>`)+`</section>`}
- if(tab==="pro"){h=`<section><h2>${tt.proTitle}</h2><p>${tt.proIntro}</p><div class="card"><h3>${tt.license}</h3><p><b>${D.pro?tt.licenseDemo:tt.licenseFree}</b></p><button class="b" onclick="D.pro=!D.pro;sv();render()">${D.pro?tt.deactivate:tt.activate}</button><p class="mut">${tt.serverNote}</p></div><div class="card"><h3>${tt.updates}</h3><p><b>${tt.manualVersion}: 7.9</b></p><p>${tt.effective}: 01/01/2026</p><p class="mut">Fuente oficial consultada: Ministerio de Industria y Turismo. Esta pantalla informa de la versión de referencia incorporada; no comprueba automáticamente si existe una versión posterior.</p><div class="row"><button class="g" onclick="alert(T[D.lang].updateOffline)">${tt.updateCheck}</button><a class="g" style="display:inline-block;text-decoration:none;text-align:center" href="https://industria.gob.es/Calidad-Industrial/vehiculos/Paginas/inspeccion-tecnica-vehiculos.aspx" target="_blank" rel="noopener">${tt.officialSource}</a></div></div><div class="card"><h3>${tt.paidFeatures}</h3><ul><li>${tt.proFeature1}</li><li>${tt.proFeature2}</li><li>${tt.proFeature3}</li><li>${tt.proFeature4}</li></ul><p>${tt.priceHint}</p></div><p class="mut">${tt.rulesDisclaimer}</p></section>`}
+ if(tab==="pro"){h=`<section><h2>${tt.proTitle}</h2><p>${tt.proIntro}</p><div class="card"><h3>${tt.license}</h3><p><b>${D.pro?tt.licenseDemo:tt.licenseFree}</b></p><button class="b" onclick="D.pro=!D.pro;sv();render()">${D.pro?tt.deactivate:tt.activate}</button><p class="mut">${tt.serverNote}</p></div><div class="card"><h3>${tt.updates}</h3><p><b>${tt.manualVersion}: 7.9</b></p><p>${tt.effective}: 01/01/2026</p><p class="mut">Comprueba el manifiesto publicado en GitHub Pages. La descarga solo compara metadatos: no instala ni modifica reglas automáticamente.</p><div class="row"><button class="g" onclick="checkRulesUpdate()">${tt.updateCheck}</button><a class="g" style="display:inline-block;text-decoration:none;text-align:center" href="https://industria.gob.es/Calidad-Industrial/vehiculos/Paginas/inspeccion-tecnica-vehiculos.aspx" target="_blank" rel="noopener">${tt.officialSource}</a></div><div id="rulesUpdateResult" class="mut" role="status" aria-live="polite" style="margin-top:10px">Aún no se ha comprobado el manifiesto.</div></div><div class="card"><h3>${tt.paidFeatures}</h3><ul><li>${tt.proFeature1}</li><li>${tt.proFeature2}</li><li>${tt.proFeature3}</li><li>${tt.proFeature4}</li></ul><p>${tt.priceHint}</p></div><p class="mut">${tt.rulesDisclaimer}</p></section>`}
  m.innerHTML=h;rep(c);
+}
+async function checkRulesUpdate(){
+ const box=document.getElementById("rulesUpdateResult");
+ if(!box)return;
+ box.textContent="Проверяем опубликованный манифест…";
+ try{
+  const response=await fetch("./rules-manifest.json",{cache:"no-store"});
+  if(!response.ok)throw new Error("HTTP "+response.status);
+  const data=await response.json();
+  if(!data.rules_pack||!data.rules_pack.version)throw new Error("В манифесте отсутствует версия пакета правил");
+  const remote=String(data.rules_pack.version), installed="7.9";
+  const status=String(data.rules_pack.status||"unknown");
+  const effective=String(data.rules_pack.effective_from||"не указана");
+  const review=String(data.next_review_due||"не указана");
+  let result="Манифест получен. Опубликованная версия: "+remote+"; вступает в силу: "+effective+". Статус: "+status+". Следующая проверка источников: "+review+". ";
+  if(remote!==installed)result+="Есть различие с версией, встроенной в приложение ("+installed+"). Это уведомление, а не установка обновления.";
+  else result+="Версия совпадает со встроенной ("+installed+"). Новые правила автоматически не применялись.";
+  if(status!=="validated")result+=" Внимание: пакет не отмечен как полностью проверенный.";
+  box.textContent=result;
+ }catch(error){box.textContent="Не удалось проверить манифест: "+error.message+". Проверьте публикацию GitHub Pages и доступность rules-manifest.json.";}
 }
 function rep(c){const tt=T[D.lang],k=D.car,P=D.pro;
  const fx=x=>D.fix[x.id]?`<br><i>${esc(tt.fix)}: ${esc(D.fix[x.id])}</i>`:"";
