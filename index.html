@@ -165,11 +165,36 @@ function calc(){const a=items(),n=a.length,ok=a.filter(x=>D.st[x.id]===1).length
  if(pc)s=0;
  return{a,n,ok,pct,cl,probs,dqp,s,cr}}
 const col=s=>["var(--bad)","var(--warn)","var(--ok)"][s];
+const ITV_COMMANDS = [{"group":"Освещение","ru":"Включите свет","es":"Encienda las luces","phon":"энсьенда лас лусэс","uk":"Увімкніть світло","en":"Turn on the lights"},{"group":"Освещение","ru":"Включите ближний свет","es":"Ponga las luces de cruce","phon":"понга лас лусэс дэ крусе","uk":"Увімкніть ближнє світло","en":"Switch on dipped headlights"},{"group":"Освещение","ru":"Включите дальний свет","es":"Ponga las largas","phon":"понга лас ларгас","uk":"Увімкніть дальнє світло","en":"Switch on main beam"},{"group":"Освещение","ru":"Включите габаритные огни","es":"Ponga las luces de posición","phon":"понга лас лусэс дэ посисьон","uk":"Увімкніть габаритні вогні","en":"Switch on the sidelights"},{"group":"Освещение","ru":"Включите указатели поворота","es":"Ponga los intermitentes","phon":"понга лос интермитэнтэс","uk":"Увімкніть покажчики повороту","en":"Switch on the indicators"},{"group":"Освещение","ru":"Включите аварийную сигнализацию","es":"Ponga las luces de emergencia","phon":"понга лас лусэс дэ эмэрхэнсья","uk":"Увімкніть аварійну сигналізацію","en":"Switch on the hazard lights"},{"group":"Освещение","ru":"Нажмите на тормоз","es":"Pise el freno","phon":"писэ эль фрэно","uk":"Натисніть на гальмо","en":"Press the brake pedal"},{"group":"Освещение","ru":"Включите заднюю передачу","es":"Ponga la marcha atrás","phon":"понга ла марча атрас","uk":"Увімкніть задню передачу","en":"Engage reverse gear"},{"group":"Управление","ru":"Поверните руль налево","es":"Gire el volante a la izquierda","phon":"хирэ эль волантэ а ла искьерда","uk":"Поверніть кермо ліворуч","en":"Turn the steering wheel left"},{"group":"Управление","ru":"Поверните руль направо","es":"Gire el volante a la derecha","phon":"хирэ эль волантэ а ла дэ реча","uk":"Поверніть кермо праворуч","en":"Turn the steering wheel right"},{"group":"Управление","ru":"Запустите двигатель","es":"Arranque el motor","phon":"арранкэ эль мотор","uk":"Запустіть двигун","en":"Start the engine"},{"group":"Управление","ru":"Заглушите двигатель","es":"Apague el motor","phon":"апагэ эль мотор","uk":"Заглушіть двигун","en":"Switch off the engine"},{"group":"Управление","ru":"Немного прибавьте газ","es":"Acelere un poco","phon":"асэлэрэ ун поко","uk":"Трохи натисніть на газ","en":"Accelerate a little"},{"group":"Управление","ru":"Поддерживайте обороты","es":"Mantenga las revoluciones","phon":"мантэнга лас рэволусьонэс","uk":"Підтримуйте оберти","en":"Keep the revs steady"},{"group":"Управление","ru":"Включите стояночный тормоз","es":"Accione el freno de mano","phon":"аксьонэ эль фрэно дэ мано","uk":"Увімкніть стоянкове гальмо","en":"Apply the parking brake"},{"group":"Управление","ru":"Снимите стояночный тормоз","es":"Quite el freno de mano","phon":"китэ эль фрэно дэ мано","uk":"Зніміть стоянкове гальмо","en":"Release the parking brake"},{"group":"Стекло и сигнал","ru":"Включите стеклоочистители","es":"Ponga los limpiaparabrisas","phon":"понга лос лимпьяпарабрисас","uk":"Увімкніть склоочисники","en":"Switch on the windscreen wipers"},{"group":"Стекло и сигнал","ru":"Включите омыватель стекла","es":"Accione el lavaparabrisas","phon":"аксьонэ эль лавапарабрисас","uk":"Увімкніть омивач скла","en":"Use the windscreen washer"},{"group":"Стекло и сигнал","ru":"Посигнальте","es":"Toque el claxon","phon":"токэ эль клаксон","uk":"Посигнальте","en":"Sound the horn"},{"group":"Проверка тормозов","ru":"Тормозите постепенно","es":"Frene progresivamente","phon":"фрэнэ прогрэсива-мэнтэ","uk":"Гальмуйте поступово","en":"Brake progressively"},{"group":"Проверка тормозов","ru":"Тормозите сильнее","es":"Frene más fuerte","phon":"фрэнэ мас фуэртэ","uk":"Гальмуйте сильніше","en":"Brake harder"},{"group":"Проверка тормозов","ru":"Отпустите тормоз","es":"Suelte el freno","phon":"суэльтэ эль фрэно","uk":"Відпустіть гальмо","en":"Release the brake"},{"group":"Проверка тормозов","ru":"Поверните колёса","es":"Gire las ruedas","phon":"хирэ лас руэдас","uk":"Поверніть колеса","en":"Turn the wheels"},{"group":"Общие команды","ru":"Откройте капот","es":"Abra el capó","phon":"абра эль капо","uk":"Відкрийте капот","en":"Open the bonnet"},{"group":"Общие команды","ru":"Откройте багажник","es":"Abra el maletero","phon":"абра эль малетеро","uk":"Відкрийте багажник","en":"Open the boot"},{"group":"Общие команды","ru":"Выйдите из автомобиля","es":"Baje del vehículo","phon":"бахэ дэль вэхикуло","uk":"Вийдіть з автомобіля","en":"Get out of the vehicle"},{"group":"Общие команды","ru":"Подождите здесь","es":"Espere aquí","phon":"эспэрэ аки","uk":"Зачекайте тут","en":"Wait here"},{"group":"Общие команды","ru":"Следуйте инструкциям","es":"Siga las instrucciones","phon":"сига лас инструксьонэс","uk":"Дотримуйтеся інструкцій","en":"Follow the instructions"},{"group":"Если не поняли","ru":"Повторите, пожалуйста","es":"¿Puede repetir, por favor?","phon":"пуэдэ рэпэтир пор фавор","uk":"Повторіть, будь ласка","en":"Could you repeat, please?"},{"group":"Если не поняли","ru":"Помедленнее, пожалуйста","es":"Más despacio, por favor","phon":"мас дэспасьо пор фавор","uk":"Повільніше, будь ласка","en":"More slowly, please"},{"group":"Если не поняли","ru":"Так правильно?","es":"¿Así está bien?","phon":"аси эста бьен","uk":"Так правильно?","en":"Is this correct?"},{"group":"Если не поняли","ru":"Я не понимаю. Можете показать?","es":"No entiendo. ¿Puede mostrarme?","phon":"но энтьендо. пуэдэ мострармэ","uk":"Я не розумію. Можете показати?","en":"I don't understand. Could you show me?"}];
+
+function renderCommandCards(list,l){
+ const none={ru:"Ничего не найдено.",es:"No se encontraron comandos.",uk:"Команд не знайдено.",en:"No commands found."}[l];
+ if(!list.length)return `<div class="card">${none}</div>`;
+ let out="";
+ for(const group of [...new Set(list.map(x=>x.group))]){
+  out+=`<div class="card"><h3>${esc(group)}</h3>`;
+  out+=list.filter(x=>x.group===group).map(x=>`<div class="it"><span><b>${esc(x.es)}</b><br><span class="mut">Произношение: ${esc(x.phon)}</span><br>${esc(x[l])}${l!=="ru"?`<br><span class="mut">${esc(x.ru)}</span>`:""}</span><button class="fl" aria-label="Показать команду" onclick="speakITV('${x.es.replace(/'/g,"\\'")}')">▶</button></div>`).join("");
+  out+="</div>";
+ }
+ return out;
+}
+function renderCommandList(){
+ const l=D.lang,el=document.getElementById("cmdList");if(!el)return;
+ const q=window.itvCmdSearch||"";
+ const list=ITV_COMMANDS.filter(x=>[x[l],x.es,x.phon,x.ru,x.uk,x.en,x.group].join(" ").toLowerCase().includes(q.toLowerCase()));
+ el.innerHTML=renderCommandCards(list,l);
+}
+function speakITV(text){
+ if(!("speechSynthesis" in window)){alert("Озвучивание не поддерживается этим браузером.");return}
+ window.speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);u.lang="es-ES";u.rate=.85;window.speechSynthesis.speak(u);
+}
+
 function render(){
  const l=T[D.lang]?D.lang:"es",tt=T[l];D.lang=l;L=LI[l];document.documentElement.lang=l;
  document.getElementById("sub").textContent=tt.sub;
  document.getElementById("lg").value=l;document.getElementById("pb").textContent=D.pro?"PRO":"FREE";
- const lk=D.pro?"":" 🔒";const tabs=[["car",tt.car+lk],["dq",tt.dq],["ck",tt.ck],["pr",tt.pr],["jr",tt.jr+lk],["tp",tt.tp+lk],["rd",tt.rd],["rp",tt.rp],["hs",tt.hs+lk],["gl",tt.gl],["pro",tt.proTitle]];
+ const lk=D.pro?"":" 🔒";const tabs=[["car",tt.car+lk],["dq",tt.dq],["ck",tt.ck],["pr",tt.pr],["jr",tt.jr+lk],["tp",tt.tp+lk],["rd",tt.rd],["rp",tt.rp],["hs",tt.hs+lk],["gl",tt.gl],["cmd",({ru:"Команды ITV",es:"Comandos ITV",uk:"Команди ITV",en:"ITV commands"})[l]],["pro",tt.proTitle]];
  document.getElementById("nav").innerHTML=tabs.map(x=>`<button class="${tab===x[0]?"on":""}" onclick="go('${x[0]}')">${x[1]}</button>`).join("");
  const m=document.getElementById("m"),c=calc();let h="";
  if((tab==="car"||tab==="hs"||tab==="tp"||tab==="jr")&&!D.pro)h=`<section><h2>🔒 PRO</h2><div class="card"><p>${tt.lockT}</p><button class="b" onclick="D.pro=true;sv();render()">${tt.demo}</button></div></section>`;
@@ -189,6 +214,17 @@ function render(){
    return`<div class="card"><div class="row" style="align-items:center"><div><b>${esc(e.date)}</b><br><span class="mut">${n?dn+"/"+n+" "+tt.jfx:""}</span></div><div style="flex:0 0 auto"><span class="st" style="background:${e.res==="f"?"var(--ok)":e.res==="d"?"var(--warn)":"var(--bad)"}">${tt["rs"+e.res]}</span> <button class="g" onclick="delJr(${i})">✕</button></div></div>`+
    e.defs.map((x,k)=>`<div class="it ${x.done?"d":""}"><input type="checkbox" ${x.done?"checked":""} onchange="D.car.jr[${i}].defs[${k}].done=this.checked;sv();render()"><span><i>${x.ty}</i>${esc(x.t)}</span></div>`).join("")+
    (e.res!=="f"?`<p class="mut">${tt.jplan}</p>`+(n&&!op.length?`<p><b>${tt.jready}</b></p>`:op.length?`<p><b>${op.length}</b> ${tt.jleft}: ${op.map(x=>x.ty+" "+esc(x.t)).join("; ")}</p>`:""):"")+`</div>`}).join("")+`</section>`}
+
+ if(tab==="cmd"){
+  const title={ru:"Команды инспектора ITV",es:"Comandos del inspector ITV",uk:"Команди інспектора ITV",en:"ITV inspector commands"}[l];
+  const searchLabel={ru:"Поиск команды",es:"Buscar un comando",uk:"Пошук команди",en:"Search commands"}[l];
+  const help={ru:"Произношение русскими буквами приблизительное. Инспекторы могут использовать другие формулировки. Выполняйте команды только когда это безопасно.",es:"La pronunciación es aproximada. El inspector puede usar otras expresiones. Siga las instrucciones solo cuando sea seguro.",uk:"Вимова кирилицею приблизна. Інспектор може використовувати інші формулювання. Виконуйте команди лише коли це безпечно.",en:"The Cyrillic pronunciation is approximate. Inspectors may use different wording. Follow instructions only when it is safe."}[l];
+  const searchVal=window.itvCmdSearch||"";
+  const all=ITV_COMMANDS.filter(x=>[x[l],x.es,x.phon,x.ru,x.uk,x.en,x.group].join(" ").toLowerCase().includes(searchVal.toLowerCase()));
+  const groups=[...new Set(all.map(x=>x.group))];
+  h=`<section><h2>${title}</h2><p class="mut">${help}</p><div class="card"><label>${searchLabel}</label><input type="search" value="${esc(searchVal)}" placeholder="${l==="es"?"Ej.: freno, luces…":l==="uk"?"Напр.: гальмо, світло…":l==="en"?"E.g. brake, lights…":"Например: тормоз, свет…"}" oninput="window.itvCmdSearch=this.value;renderCommandList()"></div><div id="cmdList">${renderCommandCards(all,l)}</div></section>`;
+ }
+
  if(tab==="gl"){h=`<section><h2>${tt.gl}</h2><h3>${tt.vis}</h3><div class="card"><ol style="margin:0;padding-left:20px">${VS[L].split("|").map(x=>`<li style="margin:6px 0">${esc(x)}</li>`).join("")}</ol></div><h3>${tt.glh}</h3><div class="card">${GL.map(g=>`<div class="it"><span><b>${esc(g[0])}</b> — ${esc(g[1+L])}</span></div>`).join("")}</div></section>`}
  if(tab==="rd"){h=`<section><h2>${tt.rd}</h2><div class="card"><div class="big">${c.pct}%</div><div class="bar" style="margin:10px 0"><div style="width:${c.pct}%"></div></div><p>${tt.crit}: <b>${c.cl.length}</b> ${tt.left} (${c.cr.length-c.cl.length}/${c.cr.length})</p><p>${tt.bad}: <b>${c.probs.length}</b></p>${D.pro?`<span class="st" style="background:${col(c.s)}">${tt.st[c.s]}</span>`:`<span class="mut">🔒 ${tt.tipT}</span>`}</div>${D.pro?`<button class="b" onclick="snap()">${tt.save}</button>`:""}</section>`}
  if(tab==="rp"){h=`<section><h2>${tt.rp}</h2><div class="card"><p class="mut">${esc(tt.note)}</p><button class="b" onclick="window.print()">${tt.pdf}</button></div><div class="card"><p class="mut">${tt.bkn}</p><div class="row"><button class="g" onclick="bk()">${tt.exp}</button><button class="g" onclick="document.getElementById('fi').click()">${tt.imp}</button></div></div></section>`}
@@ -208,7 +244,7 @@ async function checkRulesUpdate(){
   const remote=String(data.rules_pack.version), installed="7.9";
   const status=String(data.rules_pack.status||"unknown");
   const effective=String(data.rules_pack.effective_from||"не указана");
-  const review=String(data.next_review_due||"не указана");
+  const review=String(data.rules_pack.next_review_due||data.next_review_due||"не указана");
   let result="Манифест получен. Опубликованная версия: "+remote+"; вступает в силу: "+effective+". Статус: "+status+". Следующая проверка источников: "+review+". ";
   if(remote!==installed)result+="Есть различие с версией, встроенной в приложение ("+installed+"). Это уведомление, а не установка обновления.";
   else result+="Версия совпадает со встроенной ("+installed+"). Новые правила автоматически не применялись.";
